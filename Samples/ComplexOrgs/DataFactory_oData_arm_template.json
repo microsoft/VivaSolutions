@@ -1,0 +1,611 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+		"vaults_MTkvsecret_name": {
+            "defaultValue": "Enter KeyVault Name (lowercase alpha-numeric)",
+            "type": "String"
+        },
+        "storageAccounts_MTstorage_name": {
+            "defaultValue": "Enter Storage Account Name (lowercase alpha-numeric)",
+            "type": "String"
+        },
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "Enter the unique name of a new data factory"
+        },
+		"resourcegroup_location_name": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String"
+        },
+        "ODataCopyLS_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "@{linkedService().odataurl}"
+        },
+        "ODataCopyLS_properties_typeProperties_tenant": {
+            "type": "object",
+            "defaultValue": {
+                "type": "AzureKeyVaultSecret",
+                "store": {
+                    "referenceName": "AzureKeyVaultLS",
+                    "type": "LinkedServiceReference"
+                },
+                "secretName": "@{linkedService().tenantid}"
+            }
+        },
+        "ODataCopyLS_properties_typeProperties_servicePrincipalId": {
+            "type": "object",
+            "defaultValue": {
+                "type": "AzureKeyVaultSecret",
+                "store": {
+                    "referenceName": "AzureKeyVaultLS",
+                    "type": "LinkedServiceReference"
+                },
+                "secretName": "@{linkedService().servicePrincipal}"
+            }
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]",
+		"AzureKeyVaultLS_properties_typeProperties_baseUrl": "[concat('https://', parameters('vaults_MTkvsecret_name'), '.vault.azure.net/')]",
+		"AzureBlobStorageLS_properties_typeProperties_serviceEndpoint": "[concat('https://', parameters('storageAccounts_MTstorage_name'), '.blob.core.windows.net')]"
+    },
+    "resources": [
+	{
+            "name": "[parameters('factoryName')]",
+            "type": "Microsoft.DataFactory/factories",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "globalParameters": {}
+            },
+            "dependsOn": [],
+            "location": "[parameters('resourcegroup_location_name')]",
+            "identity": {
+                "type": "SystemAssigned"
+            }
+    },
+	{
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[parameters('vaults_MTkvsecret_name')]",
+            "location": "[parameters('resourcegroup_location_name')]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+                "tenantId": "[subscription().tenantId]",
+                "accessPolicies": [],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "enableRbacAuthorization": false,
+                "vaultUri": "[concat('https://', parameters('vaults_MTkvsecret_name'), '.vault.azure.net/')]",
+                "provisioningState": "Succeeded"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('storageAccounts_MTstorage_name')]",
+            "location": "[parameters('resourcegroup_location_name')]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "allowCrossTenantReplication": true,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": false,
+                "allowSharedKeyAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(parameters('storageAccounts_MTstorage_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_MTstorage_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "changeFeed": {
+                    "enabled": false
+                },
+                "restorePolicy": {
+                    "enabled": false
+                },
+                "containerDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                },
+                "isVersioningEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-04-01",
+            "name": "[concat(parameters('storageAccounts_MTstorage_name'), '/default/wpaexports')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_MTstorage_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_MTstorage_name'))]"
+            ],
+            "properties": {
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/OutPutDelimitedTextDS_MTBCDPipeline')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureBlobStorageLS",
+                    "type": "LinkedServiceReference"
+                },
+                "parameters": {
+                    "filename": {
+                        "type": "string",
+                        "defaultValue": "@dataset().filename"
+                    }
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": {
+                            "value": "@concat(dataset().filename,'_',formatDateTime(utcnow(), 'yyyy-MM-dd_h_m'), '.csv') ",
+                            "type": "Expression"
+                        },
+                        "folderPath": "rawdata1",
+                        "container": "wpaexports"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": []
+            },
+            "dependsOn": [
+				"[resourceId('Microsoft.DataFactory/factories', parameters('factoryName'))]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]",
+				"[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_MTkvsecret_name'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CopyPipeline_MToDataCopy')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "ODataCopyLS",
+                    "type": "LinkedServiceReference",
+                    "parameters": {
+                        "odataurl": {
+                            "value": "@dataset().odataurl",
+                            "type": "Expression"
+                        },
+                        "tenantid": {
+                            "value": "@dataset().tenantid",
+                            "type": "Expression"
+                        },
+                        "aadresource": {
+                            "value": "@dataset().aadresource",
+                            "type": "Expression"
+                        },
+                        "servicePrincipal": {
+                            "value": "@dataset().servicePrincipal",
+                            "type": "Expression"
+                        },
+                        "secretName": {
+                            "value": "@dataset().secretName",
+                            "type": "Expression"
+                        },
+                        "path": {
+                            "value": "@dataset().path",
+                            "type": "Expression"
+                        }
+                    }
+                },
+                "parameters": {
+                    "odataurl": {
+                        "type": "string",
+                        "defaultValue": "@dataset().odataurl"
+                    },
+                    "tenantid": {
+                        "type": "string",
+                        "defaultValue": "@dataset().tenantid"
+                    },
+                    "aadresource": {
+                        "type": "string",
+                        "defaultValue": "@dataset().aadresource"
+                    },
+                    "servicePrincipal": {
+                        "type": "string",
+                        "defaultValue": "@dataset().servicePrincipal"
+                    },
+                    "secretName": {
+                        "type": "string",
+                        "defaultValue": "@dataset().secretName"
+                    },
+                    "path": {
+                        "type": "string",
+                        "defaultValue": "@dataset().path"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "defaultValue": "@variables('filename')"
+                    }
+                },
+                "annotations": [],
+                "type": "ODataResource",
+                "schema": [],
+                "typeProperties": {
+                    "path": {
+                        "value": "@dataset().path",
+                        "type": "Expression"
+                    }
+                }
+            },
+            "dependsOn": [
+				"[resourceId('Microsoft.DataFactory/factories', parameters('factoryName'))]",
+                "[concat(variables('factoryId'), '/linkedServices/ODataCopyLS')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CopyPipeline_MToDatasources')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureBlobStorageLS",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobStorageLocation",
+                        "fileName": "odatasources.txt",
+                        "container": "wpaexports"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "odataurl",
+                        "type": "String"
+                    },
+                    {
+                        "name": "tenantid",
+                        "type": "String"
+                    },
+                    {
+                        "name": "aadresource",
+                        "type": "String"
+                    },
+                    {
+                        "name": "servicePrincipal",
+                        "type": "String"
+                    },
+                    {
+                        "name": "secretName",
+                        "type": "String"
+                    },
+                    {
+                        "name": "path",
+                        "type": "String"
+                    },
+                    {
+                        "name": "filename",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+				"[resourceId('Microsoft.DataFactory/factories', parameters('factoryName'))]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLS')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/CopyPipeline_MTBCDPipeline')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "VariableLookup",
+                        "type": "Lookup",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "DelimitedTextSource",
+                                "storeSettings": {
+                                    "type": "AzureBlobStorageReadSettings",
+                                    "recursive": true,
+                                    "enablePartitionDiscovery": false
+                                },
+                                "formatSettings": {
+                                    "type": "DelimitedTextReadSettings"
+                                }
+                            },
+                            "dataset": {
+                                "referenceName": "CopyPipeline_MToDatasources",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            },
+                            "firstRowOnly": false
+                        }
+                    },
+                    {
+                        "name": "ForEach1",
+                        "type": "ForEach",
+                        "dependsOn": [
+                            {
+                                "activity": "VariableLookup",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "userProperties": [],
+                        "typeProperties": {
+                            "items": {
+                                "value": "@activity('VariableLookup').output.value",
+                                "type": "Expression"
+                            },
+                            "isSequential": true,
+                            "activities": [
+                                {
+                                    "name": "CopyPipeline_MToDataCopy",
+                                    "type": "Copy",
+                                    "dependsOn": [],
+                                    "policy": {
+                                        "timeout": "7.00:00:00",
+                                        "retry": 0,
+                                        "retryIntervalInSeconds": 30,
+                                        "secureOutput": false,
+                                        "secureInput": false
+                                    },
+                                    "userProperties": [],
+                                    "typeProperties": {
+                                        "source": {
+                                            "type": "ODataSource",
+                                            "httpRequestTimeout": "00:05:00"
+                                        },
+                                        "sink": {
+                                            "type": "DelimitedTextSink",
+                                            "storeSettings": {
+                                                "type": "AzureBlobStorageWriteSettings"
+                                            },
+                                            "formatSettings": {
+                                                "type": "DelimitedTextWriteSettings",
+                                                "quoteAllText": true,
+                                                "fileExtension": ".txt"
+                                            }
+                                        },
+                                        "enableStaging": false
+                                    },
+                                    "inputs": [
+                                        {
+                                            "referenceName": "CopyPipeline_MToDataCopy",
+                                            "type": "DatasetReference",
+                                            "parameters": {
+                                                "odataurl": {
+                                                    "value": "@item().odataurl",
+                                                    "type": "Expression"
+                                                },
+                                                "tenantid": {
+                                                    "value": "@item().tenantid",
+                                                    "type": "Expression"
+                                                },
+                                                "aadresource": {
+                                                    "value": "@item().aadresource",
+                                                    "type": "Expression"
+                                                },
+                                                "servicePrincipal": {
+                                                    "value": "@item().servicePrincipal",
+                                                    "type": "Expression"
+                                                },
+                                                "secretName": {
+                                                    "value": "@item().secretName",
+                                                    "type": "Expression"
+                                                },
+                                                "path": {
+                                                    "value": "@item().path",
+                                                    "type": "Expression"
+                                                },
+                                                "filename": {
+                                                    "value": "@item().filename",
+                                                    "type": "Expression"
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "referenceName": "OutPutDelimitedTextDS_MTBCDPipeline",
+                                            "type": "DatasetReference",
+                                            "parameters": {
+                                                "filename": {
+                                                    "value": "@item().filename",
+                                                    "type": "Expression"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "variables": {
+                    "filename": {
+                        "type": "String"
+                    },
+                    "odataurl": {
+                        "type": "String"
+                    },
+                    "tenantid": {
+                        "type": "String"
+                    },
+                    "aadresource": {
+                        "type": "String"
+                    },
+                    "servicePrincipal": {
+                        "type": "String"
+                    },
+                    "secretName": {
+                        "type": "String"
+                    },
+                    "path": {
+                        "type": "String"
+                    }
+                },
+                "annotations": [],
+                "lastPublishTime": "2021-09-29T22:31:04Z"
+            },
+            "dependsOn": [
+				"[resourceId('Microsoft.DataFactory/factories', parameters('factoryName'))]",
+                "[concat(variables('factoryId'), '/datasets/CopyPipeline_MToDatasources')]",
+                "[concat(variables('factoryId'), '/datasets/CopyPipeline_MToDataCopy')]",
+                "[concat(variables('factoryId'), '/datasets/OutPutDelimitedTextDS_MTBCDPipeline')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureKeyVaultLS')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureKeyVault",
+                "typeProperties": {
+                    "baseUrl": "[variables('AzureKeyVaultLS_properties_typeProperties_baseUrl')]"
+                }
+            },
+            "dependsOn": [
+			"[resourceId('Microsoft.DataFactory/factories', parameters('factoryName'))]"
+			]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureBlobStorageLS')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobStorage",
+                "typeProperties": {
+                    "serviceEndpoint": "[variables('AzureBlobStorageLS_properties_typeProperties_serviceEndpoint')]",
+                    "accountKind": "StorageV2"
+                }
+            },
+            "dependsOn": [
+				"[resourceId('Microsoft.DataFactory/factories', parameters('factoryName'))]"
+			]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ODataCopyLS')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "OData",
+                "parameters": {
+                    "odataurl": {
+                        "type": "String"
+                    },
+                    "tenantid": {
+                        "type": "String"
+                    },
+                    "aadresource": {
+                        "type": "String"
+                    },
+                    "servicePrincipal": {
+                        "type": "String"
+                    },
+                    "secretName": {
+                        "type": "String"
+                    },
+                    "path": {
+                        "type": "String"
+                    }
+                },
+                "annotations": [],
+                "typeProperties": {
+                    "url": "[parameters('ODataCopyLS_properties_typeProperties_url')]",
+                    "authenticationType": "AadServicePrincipal",
+                    "tenant": "[parameters('ODataCopyLS_properties_typeProperties_tenant')]",
+                    "aadresourceId": "@{linkedService().aadresource}",
+                    "aadServicePrincipalCredentialType": "ServicePrincipalKey",
+                    "servicePrincipalId": "[parameters('ODataCopyLS_properties_typeProperties_servicePrincipalId')]",
+                    "servicePrincipalKey": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "AzureKeyVaultLS",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "@{linkedService().secretName}"
+                    },
+                    "path": "@{linkedService().path}"
+                }
+            },
+            "dependsOn": [
+				"[resourceId('Microsoft.DataFactory/factories', parameters('factoryName'))]",
+                "[concat(variables('factoryId'), '/linkedServices/AzureKeyVaultLS')]"
+            ]
+        }
+    ]
+}
