@@ -14,7 +14,7 @@ A Data Factory Pipeline that pulls Viva Insights query data from oData links for
 ## Minimal Path to Awesome
 
 - Download the DataFactory_oData_arm_template.json arm template in this repository.
-- [Deploy solution](https://review.docs.microsoft.com/en-us/viva/solutions/complex-organization-and-insights?branch=pr-en-us-3124#data-pipeline---automated) using the arm template in this repository
+- [Deploy solution](https://docs.microsoft.com/en-us/viva/solutions/complex-organization-insights#data-pipeline---automated) using the arm template in this repository
 
 
 ## Disclaimer
