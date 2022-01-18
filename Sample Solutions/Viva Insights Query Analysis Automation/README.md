@@ -11,3 +11,6 @@ Several scenarios can benefit from this workload through layering an advanced ET
 In fact, many advanced workplace analytics use cases may require the Viva Insights data to be productionized by automatically ingesting into an existing data warehouse, combined with other data sources to have a comprehensive view of the organization.
 -	BI solutions using PowerBI or other tools may not scale properly using the Odata link provided for Viva Insights queries. This walk-through with the combination of SQL Database and PowerBI (or any other tool connecting though Odata) will help with the limitation.
 -	There are limitations in the time period of the Viva Insights queries. Having an additional work stream to ingest and store the historical data over time would be necessary for some organizations and some scenarios.
+
+## Architecture
+![](/Viva Insights Arch.png)
