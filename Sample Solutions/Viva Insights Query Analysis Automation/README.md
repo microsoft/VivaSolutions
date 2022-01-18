@@ -13,4 +13,7 @@ In fact, many advanced workplace analytics use cases may require the Viva Insigh
 -	There are limitations in the time period of the Viva Insights queries. Having an additional work stream to ingest and store the historical data over time would be necessary for some organizations and some scenarios.
 
 ## Architecture
-![](./Architecture.png =200x300) 
+<p align="center">
+  <img src="./Architecture.png" width="800" class="center">
+</p>
+
