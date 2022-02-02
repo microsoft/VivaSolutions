@@ -34,23 +34,22 @@ To complete the conversion, a few resources must be created/provisioned in your 
 ## Load and convert Office 365 data 
 Follow the steps here to create a pipeline to export the Office 365 data into an storage account and then transfom into CDV and CSV formats.
 - Within the orchestration tool of your choice (Azure Data Factory or Synapse), create a new Pipeline.
-- Within the orchestration tool, you'll need to create a few linked service entities using the Azure resources provisioned earlier. 
+- Within the orchestration tool, you'll need to create a few linked service entities using the Azure resources provisioned earlier. In **ADF/Synapse -> Manage -> Linked Services**:
   - **Create the ADLSg2 linked service**
-    - To create the linked service to access the ADLSg2 account in **ADF/Synapse -> Manage**, select the **Azure Data Lake Storage Gen2** and create a new linked service. In the resulting blade, ensure you have set the Authentication Method to Service Principal and the Account Selection method as from an Azure subscription. Select the Azure subscription and account created earlier, as well as use the application ID and key noted earlier that has access to the account then click create. 
+    - To create the linked service to access the ADLSg2 account, select the **Azure Data Lake Storage Gen2** and create a new linked service. In the resulting blade, ensure you have set the Authentication Method to Service Principal and the Account Selection method as from an Azure subscription. Select the Azure subscription and account created earlier, as well as use the application ID and key noted earlier that has access to the account then click create. 
 
 ![ADLSg2 linked service configuration](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/ADLSg2LS.PNG)
 
-### Create the Office 365 data linked service
-To create the linked service to allow Microsoft Graph data connect to move data into your Azure storage account, select any of the drop downs under the Office 365 tables and create a new linked service. In the resulting blade, provide the application ID and key noted earlier and select create. This linked service will automatically be used for all of the other Office 365 tables as well. 
+  - **Create the Office 365 data linked service**
+    - To create the linked service to allow Microsoft Graph data connect to move data into your Azure storage account, select **Office 365** and create a new linked service. In the resulting blade, provide the application ID and key noted earlier and select create. This linked service will automatically be used for all of the Office 365 tables. 
 
 ![Office 365 linked service configuration](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/O365LS.PNG)
 
-### Create the HDI cluster linked service
-To create the linked service connected to your HDI cluster, select the drop down under HDInsightCluster and create a new linked service. In the resulting blade, ensure Account Selection is From Azure Subscription and select the subscription containing your HDI cluster and ADLSg2 account. Select the HDI cluster you created and select ADLS Gen 2 for Azure Storage linked service. Ensure the ADLSg2 linked service created previously is selected and for file system use the file system which contains the PySpark script (jsontocdm). Enter the admin credentials to access the HDI cluster and click create
+- **Create Databricks linked service** (if using Databricks)
+  - To create the linked service connected to your Databricks instance, select **Databricks** under compute and create a new linked service. In the resulting blade, ensure appropriate Databricks workspace and cluster is selected. For Access Token, generate it from Azure Databricks workplace. You can find the steps [here](https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-token).
 
-![HDI cluster linked service configuration](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/HDILS.PNG) 
-
-After completing the HDI cluster linked service, click Use this template on the template page and an Azure Data Factory pipeline will be created from the template. 
+- **Create Synapse Spark Pool ** (if using Synapse Spark Pool)
+  - in **Synapse -> Manage -> Analytics Pools -> Apache Spark Pool** create a new pool.
 
 ![ADF pipeline from template](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/ADFpipeline.PNG)
 
