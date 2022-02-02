@@ -20,11 +20,10 @@ To complete the conversion, a few resources must be created/provisioned in your 
   - A file system to store the Office 365 data outputted by Microsoft Graph data connect in JSON format (called json in this walk-though and the default value in the script)
   - A file system to store the outputted CDM entities after the conversion is complete (called cdm in this walk-though and the default value in the script)
   - A file system to store the outputted CSV entities after the conversion is complete (called csv in this walk-though and the default value in the script)
-  - A file system to store the PySpark script and other required resources (called jsontocdm). Upload the jsontocdm.py script to this filesystem
 - A prefered orchestration tool (Synapse/Azure Data Factory) and a preferred processing engine (Databricks or Synapse Spark Pool)
 - The PySpark script to convert the MGDC JSON lines into CDM and CSV format and to store the resulting files.
   - If using Databricks as your compute engine have the Databricks notebook in the **src** directory of this repository uploaded into the Databricks instance.
   - If using Synapse, import the Synapse notebook from the **src** directory of this repository into your Synapse workspace (**Develop** -> **Notebooks** -> **import**)
-- Synapse have CDM library installed by default, if using Databricks, follow the 
+- Synapse have CDM library installed by default. If using Databricks, install the CDM library via Maven.
 
 Follow instructions in [Build your first Microsoft Graph Data Connect application](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365)
