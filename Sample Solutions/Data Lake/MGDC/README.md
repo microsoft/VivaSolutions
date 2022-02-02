@@ -33,8 +33,7 @@ To complete the conversion, a few resources must be created/provisioned in your 
 
 ## Load and convert Office 365 data 
 Follow the steps here to create a pipeline to export the Office 365 data into an storage account and then transfom into CDV and CSV formats.
-- Within the orchestration tool of your choice (Azure Data Factory or Synapse), create a new Pipeline.
-- Within the orchestration tool, you'll need to create a few linked service entities using the Azure resources provisioned earlier. In **ADF/Synapse -> Manage -> Linked Services**:
+- Within the orchestration tool  (Azure Data Factory or Synapse), you'll need to create a few linked service entities using the Azure resources provisioned earlier. In **ADF/Synapse -> Manage -> Linked Services**:
   - **Create the ADLSg2 linked service**
     - To create the linked service to access the ADLSg2 account, select the **Azure Data Lake Storage Gen2** and create a new linked service. In the resulting blade, ensure you have set the Authentication Method to Service Principal and the Account Selection method as from an Azure subscription. Select the Azure subscription and account created earlier, as well as use the application ID and key noted earlier that has access to the account then click create. 
 ![ADLSg2 linked service configuration](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/ADLSg2LS.PNG)
@@ -45,27 +44,24 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
     - To create the linked service connected to your Databricks instance, select **Databricks** under compute and create a new linked service. In the resulting blade, ensure appropriate Databricks workspace and cluster is selected. For Access Token, generate it from Azure Databricks workplace. You can find the steps [here](https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-token).
   - **Create the Synapse Spark Pool** (if using Synapse Spark Pool)
     - In **Synapse -> Manage -> Analytics Pools -> Apache Spark Pool** create a new pool.
+- Within the orchestration tool (ADF or Synapse), create a new Pipeline.
+- Create the following parameters for the pipeline.
+  - OfficeDataFileSystem - The file system in the ADLSg2 account to place the Office 365 data in JSON lines. (json for this walkthrough)
+  - DateStartTime - The start time for what Office 365 you would like to process. The format is 2019-10-22T00:00:00Z
+  - DateEndTime - The end time for what Office 365 data you would like to process. The format is 2019-10-28T00:00:00Z
+  - StorageAccountName - The name of the ADLSg2 account
+  - AppID - The application ID for the app registration provisioned earlier
+  - AppKey - The application key for the app registration provisioned earlier
+  - TenantId - The tenant id for the app registration provisioned earlier
+  - CdmDataFileSystem - The file system in the ADLSg2 account which will contain the CDM entities (cdm for this walkthrough)
+  - CdmModelName - Sub-directory in the CdmDataFileSystem for the CDM enitities; default to O365-data
+  - MessageDatasetFolder - Sub-directory in the OfficeDataFileSystem for the messages in JSON; default to message
+  - EventDatasetFolder - Sub-directory in the OfficeDataFileSystem for events in JSON; default to event
+  - UserDatasetFolder - Sub-directory in the OfficeDataFileSystem for user data in JSON; default to user
+  - ManagerDatasetFolder - Sub-directory in the OfficeDataFileSystem for manager user data in JSON; default to manager
 
-
-### Executing the Azure Data Factory pipeline
-The template creates a pipeline with four copy activities, one for each data type extracted through Microsoft Graph data connect (email messages, calendar events, Azure Active Directory user and manager information) and a HDInsight Spark activitym to execute the conversion logic and copy the result into the ADLSg2 account. To execute the pipeline, first publish the pipeline and then click Add Trigger -> Trigger Now. There will be a variety of pipeline run parameters required, specifically:
-* OfficeDataFileSystem - The file system in the ADLSg2 account to place the Office 365 data in JSON lines. (json for this walkthrough)
-* DateStartTime - The start time for what Office 365 you would like to process. The format is 2019-10-22T00:00:00Z
-* DateEndTime - The end time for what Office 365 data you would like to process. The format is 2019-10-28T00:00:00Z
-* StorageAccountName - The name of the ADLSg2 account
-* AppID - The application ID for the app registration provisioned earlier
-* AppKey - The application key for the app registration provisioned earlier
-* TenantId - The tenant id for the app registration provisioned earlier
-* CdmDataFileSystem - The file system in the ADLSg2 account which will contain the CDM entities (cdm for this walkthrough)
-* CdmModelName - Sub-directory in the CdmDataFileSystem for the CDM enitities; default to O365-data
-* MessageDatasetFolder - Sub-directory in the OfficeDataFileSystem for the messages in JSON; default to message
-* EventDatasetFolder - Sub-directory in the OfficeDataFileSystem for events in JSON; default to event
-* UserDatasetFolder - Sub-directory in the OfficeDataFileSystem for user data in JSON; default to user
-* ManagerDatasetFolder - Sub-directory in the OfficeDataFileSystem for manager user data in JSON; default to manager
-
-![Pipeline run parameters](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/PipelineRunParameters.PNG)
-
-Once the parameters are fully populated, click run. You can then monitor the pipeline run in the Azure Data Factory monitor tab. You will need a global administrator (or delegate that was appointed during the pre-reqs of this walkthrough) to approve the Microsoft Graph data connect data access request through Privileged Access Management once the copy activity status is "ConsentPending". The resulting CDM entities will be available as CSVs under the cdm filesystem in the ADLSg2 account.
+### Executing the pipeline
+Documenting
 
 
 Follow instructions in [Build your first Microsoft Graph Data Connect application](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365)
