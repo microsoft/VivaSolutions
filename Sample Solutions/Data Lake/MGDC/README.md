@@ -25,5 +25,9 @@ To complete the conversion, a few resources must be created/provisioned in your 
   - If using Databricks as your compute engine have the Databricks notebook in the **src** directory of this repository uploaded into the Databricks instance.
   - If using Synapse, import the Synapse notebook from the **src** directory of this repository into your Synapse workspace (**Develop** -> **Notebooks** -> **import**)
 - Synapse have CDM library installed by default. If using Databricks, install the CDM library via Maven.
+<p align="center">
+  <img src="images/DatabricksLibrary1.JPG" width="800" class="center">
+  <img src="images/DatabricksLibrary2.JPG" width="800" class="center">
+</p>
 
 Follow instructions in [Build your first Microsoft Graph Data Connect application](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365)
