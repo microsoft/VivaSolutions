@@ -51,7 +51,6 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
 - **Create Synapse Spark Pool ** (if using Synapse Spark Pool)
   - in **Synapse -> Manage -> Analytics Pools -> Apache Spark Pool** create a new pool.
 
-![ADF pipeline from template](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/ADFpipeline.PNG)
 
 ### Executing the Azure Data Factory pipeline
 The template creates a pipeline with four copy activities, one for each data type extracted through Microsoft Graph data connect (email messages, calendar events, Azure Active Directory user and manager information) and a HDInsight Spark activitym to execute the conversion logic and copy the result into the ADLSg2 account. To execute the pipeline, first publish the pipeline and then click Add Trigger -> Trigger Now. There will be a variety of pipeline run parameters required, specifically:
@@ -62,8 +61,6 @@ The template creates a pipeline with four copy activities, one for each data typ
 * AppID - The application ID for the app registration provisioned earlier
 * AppKey - The application key for the app registration provisioned earlier
 * TenantId - The tenant id for the app registration provisioned earlier
-* ScriptFileSystem - The file system in the ADLSg2 account containing the PySpark script (jsontocdm for this walkthrough)
-* PyScriptName - The name of the PySpark script (jsontocdm.py for this walkthrough)
 * CdmDataFileSystem - The file system in the ADLSg2 account which will contain the CDM entities (cdm for this walkthrough)
 * CdmModelName - Sub-directory in the CdmDataFileSystem for the CDM enitities; default to O365-data
 * MessageDatasetFolder - Sub-directory in the OfficeDataFileSystem for the messages in JSON; default to message
