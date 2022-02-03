@@ -32,7 +32,7 @@ To complete the conversion, a few resources must be created/provisioned in your 
 
 
 ## Load and convert Office 365 data 
-Follow the steps here to create a pipeline to export the Office 365 data into an storage account and then transfom into CDV and CSV formats.
+Follow the steps here to create a pipeline to export the Office 365 data into an storage account and then transfom into CDM and CSV formats.
 - Within the orchestration tool  (Azure Data Factory or Synapse), you'll need to create a few linked service entities using the Azure resources provisioned earlier. In **ADF/Synapse -> Manage -> Linked Services**:
   - **Create the ADLSg2 linked service**
     - To create the linked service to access the ADLSg2 account, select the **Azure Data Lake Storage Gen2** and create a new linked service. In the resulting blade, ensure you have set the Authentication Method to Service Principal and the Account Selection method as from an Azure subscription. Select the Azure subscription and account created earlier, as well as use the application ID and key noted earlier that has access to the account then click create. 
@@ -59,6 +59,8 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
   - EventDatasetFolder - Sub-directory in the OfficeDataFileSystem for events in JSON; default to event
   - UserDatasetFolder - Sub-directory in the OfficeDataFileSystem for user data in JSON; default to user
   - ManagerDatasetFolder - Sub-directory in the OfficeDataFileSystem for manager user data in JSON; default to manager
+  ![](images/PipelineParameters.JPG)
+  
 
 ### Executing the pipeline
 Documenting
