@@ -78,11 +78,7 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
   - Link to the imported notebook downloaded and imported to the tool in this walk-through
   - Select the Spark Pool or the Databricks linked service
   - Base Parameters as <p align="center"> <img src="images/NotebookParameters.JPG" width="600" class="center"> </p>
-- At this point, the pipeline should look like this <p align="center"> <img src="images/Pipeline.JPG" width="600" class="center"> </p>
+- At this point, the pipeline should look like this <p align="center"> <img src="images/Pipeline.JPG" width="400" class="center"> </p>
 - Publish the pipeline.
 - For the first trigger, follow steps [here](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365&tutorial-step=5) to monitor and approve data consent requests at Microsoft 365 Admin Center or via Powershell. 
-
-
-
-
-Follow instructions in [Build your first Microsoft Graph Data Connect application](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365)
+  - Note: Each approved request is valid for 6 months unless there is a change in the pipeline (e.g. change of name of a copy data activity or pipeline's name)
