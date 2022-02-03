@@ -59,7 +59,28 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
   - EventDatasetFolder - Sub-directory in the OfficeDataFileSystem for events in JSON; default to event
   - UserDatasetFolder - Sub-directory in the OfficeDataFileSystem for user data in JSON; default to user
   - ManagerDatasetFolder - Sub-directory in the OfficeDataFileSystem for manager user data in JSON; default to manager
-  ![](images/PipelineParameters.JPG)
+  <p align="center"> <img src="images/PipelineParameters.JPG" width="600" class="center"> </p>
+- Follow steps [here](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365&tutorial-step=4) to create four **Copy Data** activity to load the following four Office 365 tables with the parameters listed.
+  - Event Table (latest version at the moment: BasicDataSet_v0.Event_v1)
+    - Source Date filter <p align="center"> <img src="images/EventTblSource.JPG" width="600" class="center"> </p>
+    - Create a new
+    - Sink to the linked storage account with the mentioned file path and parameters
+      - Parameters: <p align="center"> <img src="images/EventTblSink.JPG" width="600" class="center"> </p>
+  - Maneger Table (latest version at the moment: BasicDataSet_v0.Manager_v0)
+    - Sink to the linked storage account with the mentioned file path and parameters
+      - File path: **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** 
+      - Parameters: <p align="center"> <img src="images/MessageTblSink.JPG" width="600" class="center"> </p>
+  - Maneger Table (latest version at the moment: BasicDataSet_v0.Manager_v0)
+    - Sink to the linked storage account with the mentioned file path and parameters
+      - File path: **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** 
+      - Parameters: <p align="center"> <img src="images/ManagerTblSink.JPG" width="600" class="center"> </p>
+  - User Table(BasicDataSet_v0.Event_v1)
+    - Sink to the linked storage account with the mentioned file path and parameters
+      - File path: **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** <p align="center"> <img src="images/EventTblSinkFilePath.JPG" width="600" class="center"> </p>
+      - Parameters: <p align="center"> <img src="images/UserTblSink.JPG" width="600" class="center"> </p>     
+  - Following the instruction, Create a new Sink dataset to be used for all four data tables. 
+    - Select the storage account provisioned in this walk-through, add OfficeDataFileSystem, DatasetPath, PipelineID as the sink dataset parameters and add **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** as File Path in **Directory** field <p align="center"> <img src="images/EventTblSinkFilePath.JPG" width="600" class="center"> </p>
+
   
 
 ### Executing the pipeline
