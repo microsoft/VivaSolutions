@@ -81,4 +81,7 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
 - At this point, the pipeline should look like this <p align="center"> <img src="images/Pipeline.JPG" width="400" class="center"> </p>
 - Publish the pipeline.
 - For the first trigger, follow steps [here](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365&tutorial-step=5) to monitor and approve data consent requests at Microsoft 365 Admin Center or via Powershell. 
-  - Note: Each approved request is valid for 6 months unless there is a change in the pipeline (e.g. change of name of a copy data activity or pipeline's name)
+  - **Note**: Each approved request is valid for 6 months unless there is a change in the pipeline (e.g. change of name of a copy data activity or pipeline's name)
+
+
+**Note**: All the parameters used in the pipeline are used to have a configurable pipeline. To skip all the parameter configuration details, you can use static paths and values.
