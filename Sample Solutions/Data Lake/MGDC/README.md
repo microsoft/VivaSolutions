@@ -70,9 +70,7 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
   - User Table(latest version at the moment: BasicDataSet_v0.User_v1)
     - No source Date filter is required
   - Following the instruction, create a new Sink dataset to be used for all four data tables. 
-    - Select the storage account provisioned in this walk-through, add **OfficeDataFileSystem**, **DatasetPath**, **PipelineID** as the sink dataset parameters and add **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** as File Path in **Directory** field
-    <p align="center"> <img src="images/EventTblSinkFilePath.JPG" width="600" class="center">
-                        <img src="images/SinkConnectionParameters.JPG" width="600" class="center"></p>
+    - Select the storage account provisioned in this walk-through, add **OfficeDataFileSystem**, **DatasetPath**, **PipelineID** as the sink dataset parameters and add **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** as File Path in **Directory** field <p align="center"> <img src="images/EventTblSinkFilePath.JPG" width="600" class="center"> <img src="images/SinkConnectionParameters.JPG" width="500" class="center"></p>
     - Initialize the Sink parameters with
       - **OfficeDataFileSystem**:@pipeline().parameters.OfficeDataFileSystem
       - **DatasetPath**: one of @pipeline().parameters.EventDatasetFolder, @pipeline().parameters.MessageDatasetFolder, @pipeline().parameters.ManagerDatasetFolder, @pipeline().parameters.UserDatasetFolder values accordingly
