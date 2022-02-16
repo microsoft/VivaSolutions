@@ -1,4 +1,5 @@
 ******Person query attributes******
+
 - PersonId
 - Date
 - Organization
@@ -98,6 +99,3 @@
 - TotalNoAttendees
 - MeetingResources
 - BusinessProcesses
-- 
-- 
-- 
