@@ -1,0 +1,103 @@
+******Person query attributes******
+- PersonId
+- Date
+- Organization
+- LevelDesignation
+- “ManagerId”
+- Workweek_span
+- Meetings_with_skip_level
+- Meeting_hours_with_skip_level
+- Generated_workload_email_hours
+- Generated_workload_email_recipients
+- Generated_workload_instant_messages_hours
+- Generated_workload_instant_messages_recipients
+- Generated_reactions_to_posts
+- Generated_replies_to_posts
+- Generated_workload_call_hours
+- Generated_workload_call_participants
+- Generated_workload_calls_organized
+- External_network_size
+- Internal_network_size
+- Networking_outside_company
+- Networking_outside_organization
+- Multitasking_hours
+- After_hours_meeting_hours
+- Open_1_hour_block
+- Open_2_hour_blocks
+- Total_focus_hours
+- Low_quality_meeting_hours
+- Meetings
+- Meeting_hours
+- Conflicting_meeting_hours
+- Multitasking_meeting_hours 
+- Redundant_meeting_hours__lower_level_
+- Redundant_meeting_hours__organizational_
+- Time_in_self_organized_meetings
+- Meeting_hours_during_working_hours
+- Generated_workload_meeting_attendees 
+- Generated_workload_meeting_hours
+- Generated_workload_meetings_organized
+- Manager_coaching_hours_1_on_1 
+- Meetings_with_manager
+- Meeting_hours_with_manager
+-  Meetings_with_manager_1_on_1
+- Meeting_hours_with_manager_1_on_1
+- After_hours_instant_messages
+- Instant_messages_sent
+- Instant_Message_hours
+- Working_hours_instant_messages
+- Emails_sent
+- Email_hours
+- Uninterrupted_focus_hours 
+- After_hours_collaboration_hours
+- Collaboration_hours_external
+- Collaboration_hours
+- Working_hours_collaboration_hours
+- After_hours_email_hours
+- Working_hours_email_hours 
+- Channels_with_active_engagement
+- Teams_with_active_engagement
+- After_hours_channel_message_hours
+- Channel_message_hours
+- Channel_messages_sent
+- Channel_reactions
+- Channel_visits 
+- Working_hours_channel_message_hours
+- After_hours_in_calls
+- Total_calls
+- Call_hours 
+- Working_hours_in_calls
+- IsInternal
+- IsActive
+- WorkingStartTimeSetInOutlook
+- WorkingEndTimeSetInOutlook
+- WorkingDaysSetInOutlook
+
+
+******Meeting query attributes******
+
+- MeetingId,StartTimestampUTC,EndTimestampUTC
+- Organizer_PersonId
+- Organizer_Organization
+- Organizer_LevelDesignation
+- Organizer_IsInternal,Attendees,Attendees_with_conflicting_meetings
+- Invitees
+- Emails_sent_during_meetings
+- Instant_messages_sent_during_meetings
+- Attendees_multitasking
+- Attendee_meeting_hours
+- Redundant_attendees ,Total_meeting_cost
+- Total_redundant_hours
+- IsCancelled
+- DurationHours
+- IsRecurring,Subject ,TotalAccept
+- TotalNoResponse
+- TotalDecline
+- TotalNoEmailsDuringMeeting
+- TotalNoDoubleBooked
+- TotalNoAttendees
+- MeetingResources
+- BusinessProcesses
+- 
+- 
+- 
