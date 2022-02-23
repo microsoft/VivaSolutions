@@ -87,7 +87,7 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
 - For the first trigger, follow steps [here](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365&tutorial-step=5) to monitor and approve data consent requests at Microsoft 365 Admin Center or via Powershell. 
   - **Note**: Each approved request is valid for 6 months unless there is a change in the pipeline (e.g. name change of a copy data activity or pipeline name)
 
-This is the exported dataset schema through this pipeline.
+This is the exported dataset schema through this pipeline. Use [Microsoft Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) to understand the detailed definition of exported feature in this schema.
 <p align="center"> <img src="images/Schema.JPG" width="900" class="center"> </p>
 
 
