@@ -15,5 +15,5 @@ In fact, many advanced workplace analytics use cases may require the Viva Insigh
 ## Architecture
 
 <p align="center">
-  <img src="Images/Architecture.png" width="800" class="center">
+  <img src="Images/Architecture.jpg" width="800" class="center">
 </p>
