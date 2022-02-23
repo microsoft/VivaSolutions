@@ -9,7 +9,7 @@ In this walkthrough you will:
 - Use Azure Synapse Spark Pool or Databricks to run a PySpark script to convert the Office 365 data from JSON lines into flat CSV or CDM entities
 
 ## Pre-requistes
-To utilize this walkthrough, you must have Microsoft Graph data connect enabled in your Office 365 organization and have an Azure subscription under the same Azure Active Directory tenant as your Office 365 subscription. Use the steps in [Set up your Microsoft 365 tenant and enable Microsoft Graph Data Connect](![image](https://user-images.githubusercontent.com/47372559/152107096-c56d0375-945a-4b5c-8472-3c2a612795e0.png)) of our Microsoft Graph data connect training module to enable and configure Microsoft Graph data connect in your environment alongside an Azure subscription.
+To utilize this walkthrough, you must have Microsoft Graph data connect enabled in your Office 365 organization and have an Azure subscription under the same Azure Active Directory tenant as your Office 365 subscription. Use the steps in [Set up your Microsoft 365 tenant and enable Microsoft Graph Data Connect](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365) of our Microsoft Graph data connect training module to enable and configure Microsoft Graph data connect in your environment alongside an Azure subscription.
 
 ## Provision required resources
 To complete the conversion, a few resources must be created/provisioned in your Azure environment, specifically:
