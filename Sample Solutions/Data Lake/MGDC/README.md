@@ -35,11 +35,10 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
 - Within the orchestration tool  (Azure Data Factory or Synapse), you'll need to create a few linked service entities using the Azure resources provisioned earlier. In **ADF/Synapse -> Manage -> Linked Services**:
   - **Create the ADLSg2 linked service**
     - To create the linked service to access the ADLSg2 account, select the **Azure Data Lake Storage Gen2** and create a new linked service. In the resulting blade, ensure you have set the Authentication Method to Service Principal and the Account Selection method as from an Azure subscription. Select the Azure subscription and account created earlier, as well as use the application ID and key noted earlier that has access to the account then click create. 
-    <p align="center"> <img src="images/StorageLinkedService.JPG" width="800" class="center"> </p>
-![ADLSg2 linked service configuration](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/ADLSg2LS.PNG)
+    <p align="center"> <img src="images/StorageLinkedService.JPG" width="500" class="center"> </p>
   - **Create the Office 365 data linked service**
     - To create the linked service to allow Microsoft Graph data connect to move data into your Azure storage account, select **Office 365** and create a new linked service. In the resulting blade, provide the application ID and key noted earlier and select create. This linked service will automatically be used for all of the Office 365 tables. 
-![Office 365 linked service configuration](https://github.com/OfficeDev/MS-Graph-Data-Connect/blob/master/Common-Data-Model/images/O365LS.PNG)
+<p align="center"> <img src="images/Office365LinkedService.JPG" width="500" class="center"> </p>
   - **Create the Databricks linked service** (if using Databricks)
     - To create the linked service connected to your Databricks instance, select **Databricks** under compute and create a new linked service. In the resulting blade, ensure appropriate Databricks workspace and cluster is selected. For Access Token, generate it from Azure Databricks workplace. You can find the steps [here](https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-token).
   - **Create the Synapse Spark Pool** (if using Synapse Spark Pool)
