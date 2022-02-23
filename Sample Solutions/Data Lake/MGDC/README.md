@@ -32,44 +32,48 @@ To complete the conversion, a few resources must be created/provisioned in your 
 
 ## Load and convert Office 365 data 
 Follow the steps here to create a pipeline to export the Office 365 data into an storage account and then transfom into CDM and CSV formats.
-- Within the orchestration tool  (Azure Data Factory or Synapse), you'll need to create a few linked service entities using the Azure resources provisioned earlier. In **ADF/Synapse -> Manage -> Linked Services**:
-  - **Create the ADLSg2 linked service**
+- Within the orchestration tool  (Azure Data Factory or Synapse), you'll need to create a few linked service entities using the Azure resources provisioned earlier.
+  
+  In **ADF/Synapse -> Manage -> Linked Services**:
+  - **Create an ADLSg2 linked service**
     - To create the linked service to access the ADLSg2 account, select the **Azure Data Lake Storage Gen2** and create a new linked service. In the resulting blade, ensure you have set the Authentication Method to Service Principal and the Account Selection method as from an Azure subscription. Select the Azure subscription and account created earlier, as well as use the application ID and key noted earlier that has access to the account then click create. 
     <p align="center"> <img src="images/StorageLinkedService.JPG" width="500" class="center"> </p>
-  - **Create the Office 365 data linked service**
+  - **Create an Office 365 data linked service**
     - To create the linked service to allow Microsoft Graph data connect to move data into your Azure storage account, select **Office 365** and create a new linked service. In the resulting blade, provide the application ID and key noted earlier and select create. This linked service will automatically be used for all of the Office 365 tables. 
-<p align="center"> <img src="images/Office365LinkedService.JPG" width="500" class="center"> </p>
-  - **Create the Databricks linked service** (if using Databricks)
+    <p align="center"> <img src="images/Office365LinkedService.JPG" width="500" class="center"> </p>
+  - **Create a Databricks linked service** (if using Databricks)
     - To create the linked service connected to your Databricks instance, select **Databricks** under compute and create a new linked service. In the resulting blade, ensure appropriate Databricks workspace and cluster is selected. For Access Token, generate it from Azure Databricks workplace. You can find the steps [here](https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-token).
+  
+  If using Synapse with Synapse Spark Pool you have to create a new pool.
   - **Create the Synapse Spark Pool** (if using Synapse Spark Pool)
     - In **Synapse -> Manage -> Analytics Pools -> Apache Spark Pool** create a new pool.
 - Within the orchestration tool (ADF or Synapse), create a new Pipeline.
 - Create the following parameters for the pipeline.
-  - OfficeDataFileSystem - The file system in the ADLSg2 account to place the Office 365 data in JSON lines. (json for this walkthrough)
-  - DateStartTime - The start time for what Office 365 you would like to process. The format is 2019-10-22T00:00:00Z
-  - DateEndTime - The end time for what Office 365 data you would like to process. The format is 2019-10-28T00:00:00Z
-  - StorageAccountName - The name of the ADLSg2 account
-  - AppID - The application ID for the app registration provisioned earlier
-  - AppKey - The application key for the app registration provisioned earlier
-  - TenantId - The tenant id for the app registration provisioned earlier
-  - CdmDataFileSystem - The file system in the ADLSg2 account which will contain the CDM entities (cdm for this walkthrough)
-  - CdmModelName - Sub-directory in the CdmDataFileSystem for the CDM enitities; default to O365-data
-  - MessageDatasetFolder - Sub-directory in the OfficeDataFileSystem for the messages in JSON; default to message
-  - EventDatasetFolder - Sub-directory in the OfficeDataFileSystem for events in JSON; default to event
-  - UserDatasetFolder - Sub-directory in the OfficeDataFileSystem for user data in JSON; default to user
-  - ManagerDatasetFolder - Sub-directory in the OfficeDataFileSystem for manager user data in JSON; default to manager
+  - **OfficeDataFileSystem** - The file system in the ADLSg2 account to place the Office 365 data in JSON lines. (json for this walkthrough)
+  - **DateStartTime** - The start time for what Office 365 you would like to process. The format is 2019-10-22T00:00:00Z
+  - **DateEndTime** - The end time for what Office 365 data you would like to process. The format is 2019-10-28T00:00:00Z
+  - **StorageAccountName** - The name of the ADLSg2 account
+  - **AppID** - The application ID for the app registration provisioned earlier
+  - **AppKey** - The application key for the app registration provisioned earlier
+  - **TenantId** - The tenant id for the app registration provisioned earlier
+  - **CdmDataFileSystem** - The file system in the ADLSg2 account which will contain the CDM entities (cdm for this walkthrough)
+  - **CdmModelName** - Sub-directory in the CdmDataFileSystem for the CDM enitities; default to O365-data
+  - **MessageDatasetFolder** - Sub-directory in the OfficeDataFileSystem for the messages in JSON; default to message
+  - **EventDatasetFolder** - Sub-directory in the OfficeDataFileSystem for events in JSON; default to event
+  - **UserDatasetFolder** - Sub-directory in the OfficeDataFileSystem for user data in JSON; default to user
+  - **ManagerDatasetFolde**r - Sub-directory in the OfficeDataFileSystem for manager user data in JSON; default to manager
   <p align="center"> <img src="images/PipelineParameters.JPG" width="600" class="center"> </p>
-- Follow steps [here](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365&tutorial-step=4) to create four **Copy Data** activity to load the following four Office 365 tables with the parameters listed.
+- Follow steps [here](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365&tutorial-step=4) to create four **Copy Data** activity to load the following four Office 365 tables with the parameters listed below for each.
   - Event Table (latest version at the moment: BasicDataSet_v0.Event_v1)
-    - Source Date filter <p align="center"> <img src="images/EventTblSource.JPG" width="600" class="center"> </p>
+    - Source Date filter: input pipeline **DateStartTime** and **DateEndTime** parameters via _Add Dynamic Content_   <p align="center"> <img src="images/EventTblSource.JPG" width="600" class="center"> </p>
   - Message Table (latest version at the moment: BasicDataSet_v0.Message_v1)
-    - Source Date filter <p align="center"> <img src="images/MessageTblSource.JPG" width="600" class="center"> </p>
+    - Source Date filter: input pipeline **DateStartTime** and **DateEndTime** parameters via _Add Dynamic Content_ <p align="center"> <img src="images/MessageTblSource.JPG" width="600" class="center"> </p>
   - Maneger Table (latest version at the moment: BasicDataSet_v0.Manager_v0)
     - No source Date filter is required
   - User Table(latest version at the moment: BasicDataSet_v0.User_v1)
     - No source Date filter is required
   - Following the instruction, create a new Sink dataset to be used for all four data tables. 
-    - Select the storage account provisioned in this walk-through, add **OfficeDataFileSystem**, **DatasetPath**, **PipelineID** as the sink dataset parameters and add **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** as File Path in **Directory** field <p align="center"> <img src="images/EventTblSinkFilePath.JPG" width="600" class="center"> <img src="images/SinkConnectionParameters.JPG" width="500" class="center"></p>
+    - Select the storage account provisioned in this walk-through, add **OfficeDataFileSystem**, **DatasetPath**, **PipelineID** as the sink dataset parameters and add **@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)** as File Path in **Directory** field <p align="center">  <img src="images/SinkConnectionParameters.JPG" width="500" class="center"> <img src="images/EventTblSinkFilePath.JPG" width="600" class="center"></p>
     - Initialize the Sink parameters with the followings for each of the four **Copy Data Sink**
       - **OfficeDataFileSystem**:@pipeline().parameters.OfficeDataFileSystem
       - **DatasetPath**: one of @pipeline().parameters.EventDatasetFolder, @pipeline().parameters.MessageDatasetFolder, @pipeline().parameters.ManagerDatasetFolder, @pipeline().parameters.UserDatasetFolder values accordingly
@@ -81,9 +85,9 @@ Follow the steps here to create a pipeline to export the Office 365 data into an
 - At this point, the pipeline should look like this <p align="center"> <img src="images/Pipeline.JPG" width="400" class="center"> </p>
 - Publish the pipeline.
 - For the first trigger, follow steps [here](https://docs.microsoft.com/en-us/graph/data-connect-quickstart?tabs=Microsoft365&tutorial-step=5) to monitor and approve data consent requests at Microsoft 365 Admin Center or via Powershell. 
-  - **Note**: Each approved request is valid for 6 months unless there is a change in the pipeline (e.g. change of name of a copy data activity or pipeline's name)
+  - **Note**: Each approved request is valid for 6 months unless there is a change in the pipeline (e.g. name change of a copy data activity or pipeline name)
 
-This the schema of the dataset exported through this pipeline.
+This is the exported dataset schema through this pipeline.
 <p align="center"> <img src="images/Schema.JPG" width="900" class="center"> </p>
 
 
