@@ -23,7 +23,7 @@ Several scenarios can benefit from this workload through layering an advanced ET
 
 ## Architecture
 
-- [Azure Synapse Analytics](https://docs.microsoft.com/en-us/azure/architecture/example-scenario/data/small-medium-data-warehouse) is an analytics service that combines data integration, enterprise data warehousing, and big data analytics. This solution includes the following components:
+- [Azure Synapse Analytics](https://docs.microsoft.com/azure/architecture/example-scenario/data/small-medium-data-warehouse) is an analytics service that combines data integration, enterprise data warehousing, and big data analytics. This solution includes the following components:
 
   - An [Azure Synapse workspace](https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace) - Promotes collaboration between data engineers, data scientists, data analysts, and BI professionals.
   - [Azure Synapse pipelines](https://docs.microsoft.com/azure/synapse-analytics/get-started-pipelines) - Orchestrate and ingest data into SQL Database and Data Lake Storage.
@@ -163,7 +163,7 @@ After following the steps to [Create the queries](#create-the-queries), do the f
 
      ![Example values for the Workspace SQL Endpoint.](Images/example-values.png)
 
-4. Follow **Steps 1 to 5** in [To set up with Azure Synapse Analytics](../automate-exports.md#to-set-up-with-azure-synapse-analytics) to register an application and grant it permissions, and then copy and save the **Application** (client) and **Directory** (tenant) **IDs**.
+4. Follow **Steps 1 to 5** in [To set up with Azure Synapse Analytics](https:/docs.microsoft.com/automate-exports.md#to-set-up-with-azure-synapse-analytics) to register an application and grant it permissions, and then copy and save the **Application** (client) and **Directory** (tenant) **IDs**.
 
 5. In the **Pipeline activities** menu, select **Move and Transform**, and then drag a **Copy data** into your pipeline workspace.
 
