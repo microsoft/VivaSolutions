@@ -62,11 +62,12 @@ To complete the conversion, you’ll need to create or provision a few resources
 
     1. Under **Install library**, select **Maven** as the source, then select **Search Packages**.
 
+       ![Screenshot of the Install library window with Maven selected and Search packages highlighted.](images/databricks-library1.png)
 
     2. Search for and select `spark-cdm-connector`.
 
-   :::image type="content" source="(Images/databricks-library2.png" alt-text="Screenshot of Search packages window with spark-cdm-connector entered in search bar and listed as entry under Artifact id.":::
-
+       ![Screenshot of Search packages window with spark-cdm-connector entered in search bar and listed as entry under Artifact id.](images/databricks-library2.png)
+    
 ## Load and convert Office 365 data
 
 Follow these steps to create a pipeline to export your Office 365 data into a storage account, and then transform this data into CDM and CSV formats.
@@ -87,9 +88,7 @@ In **ADF/Synapse > Manage > Linked Services**:
 
     1. Select **Create**.
 
-:::image type="complex" source="(Images/storage-linked-service.png" alt-text="Screenshot of 'New linked service' blade":::
-   Screenshot that shows a New linked service blade. AzureDataLakeStorage is entered in the first field, the field underneath the Description section is not filled in, AutoResolveIntegrationRuntime is selected in the field underneath the Connect via integration runtime section, and Service Principal is selected in the field underneath the Authentication method section. Underneath the Authentication reference method section, the Inline radio button is selected. The field underneath the Tenant section is simplified with a black bar. The field underneath Service principal ID section is not filled in, and Service Principal credential is selected underneath the Service principal credential type section. Underneath the Service principal credential type section, the Service principal key button is selected. workspace's cloud type is selected underneath the Azure cloud type section. The From Azure subscription radio button is selected underneath the Account selection method section. 
-:::image-end:::
+       ![Screenshot of New linked service blade.](images/storage-linked-service.png)
 
 2. Create an Office 365 data linked service to allow Microsoft Graph Data Connect to move data into your Azure storage account:
 
@@ -98,9 +97,7 @@ In **ADF/Synapse > Manage > Linked Services**:
     1. In the resulting blade, provide the **application ID** and **application key** noted in [Provision and configure required resources](#provision-and-configure-required-resources).
     1. Select **Create**. This linked service will automatically be used for all of the Office 365 tables.
 
-    :::image type="complex" source="(Images/office365-linked-service.png" alt-text="Screenshot of New linked service blade":::
-   Screenshot that shows a New linked service blade. Office365LinkedService is entered in the field underneath the Name section. The field underneath the Description section is not filled in, and AutoResolveIntegrationRuntime is selected in the field underneath the Connect via integration runtime section. The field underneath the Office 365 Tenant section is simplified with a black bar, and the section underneath Service principal ID is not filled in. The Service principal key button is selected above the Service principal key section. The field underneath the Service principal key field is not filled in.
-:::image-end:::
+       ![Screenshot of New linked service blade.](images/office365-linked-service.png)
 
 3. Depending on your compute engine, create either a Databricks linked service or a new Synapse Spark pool.
 
@@ -145,10 +142,8 @@ In **ADF/Synapse > Manage > Linked Services**:
     * `ManagerDatasetFolder` - Sub-directory in the `OfficeDataFileSystem` for manager user data in JSON (`manager`for this walkthrough)
 
     * `CsvDataFileSystem` - The file system in the ADLSg2 account that will contain the CSV entities (`csv` for this walkthrough)
-
-    :::image type="complex" source="(Images/pipeline-parameters2.png"     alt-text="screenshot of pipeline Parameters window":::
-       Screenshot that shows the pipeline Parameters window, which contains a table with Name, Type, and Default value columns. Values for the Name and Default value columns correspond to the values provided in step 2. For Default value, StorageAccountName, AppID, AppKey, and TenantId have placeholder text that reads, Value. Type is String for all rows.
-:::image-end:::
+  
+    ![Screenshot of pipeline Parameters window.](images/pipeline-parameters2.png)
 
 ### Create Copy Data activities and a new Sink dataset
 
@@ -161,16 +156,12 @@ Follow the steps here to create four *Copy Data* activities to load the followin
 
     * **Date filter**: input pipeline `DateStartTime` and `DateEndTime` parameters via **Add Dynamic Content**.
 
-        :::image type="complex" source="(Images/event-tbl-source2.png"     alt-text="screenshot of Source window for Event Table":::
-       Screenshot that shows the Copy data activity parameter window for Event Table. The Source tab is selected and highlighted. Office365EventTable is selected in the Source dataset section and All users in the office 365 tenant is selected in the Scope section. In the Date filter section, createdDateTime is selected under Column name, and Start time and End time fields are highlighted and each contain content beginning with @pipeline....
-:::image-end:::
+      ![Screenshot of Source window for Event Table.](images/event-tbl-source2.png)
 
 2. **Message Table** (BasicDataSet_v0.Message_v1)
     * **Date filter**: input pipeline `DateStartTime` and `DateEndTime` parameters via **Add Dynamic Content**.
-
-        :::image type="complex" source="(Images/message-tbl-source2.png"     alt-text="screenshot of Source window for Message Table":::
-       Screenshot that shows the Copy data activity parameter window for Message Table. The Source tab is selected and highlighted. Office365MessageTble is selected in the Source dataset section, and All users in the office 365 tenant is selected in the Scope section. In the Date filter section, received DateTime is selected under Column name, and Start time and End time fields are highlighted and each contain content beginning with @pipeline....
-:::image-end:::
+ 
+      ![Screenshot of Source window for Message Table.](images/message-tbl-source2.png)
 
 3. **Manager Table** (BasicDataSet_v0.Manager_v0)
     * No **Date filter** is required.
@@ -182,9 +173,7 @@ Create a new Sink dataset to be used for all four data tables.
 
 1. Select the storage account provisioned in this walkthrough, then add `OfficeDataFileSystem`, `DatasetPath`, and `PipelineID` as the Sink dataset parameters, and add `@concat(dataset().OfficeDataFileSystem,'/',dataset().PipelineID,'/',dataset().DatasetPath)` as the **File path** in the **Directory field**.
 
-    :::image type="complex" source="(Images/event-tbl-sink-file-path.png"  alt-text="Screenshot of the Sink dataset Connection window":::
-       Screenshot that shows the Sink dataset window with the Connection tab selected. mgdcvivadatalakeLinkedService is selected in the Link service section, AutoResolveIntegrationRuntime is selected in the Integration runtime section, and the @concat... data path, described in step 1, is entered in the middle field of the File path section.
-:::image-end:::
+   ![Screenshot of the Sink dataset Connection window.](images/event-tbl-sink-file-path.png)
 
 2. In the *Copy Data* activities, set the **Sink** parameters as follows:
 
@@ -202,9 +191,7 @@ Create a new Sink dataset to be used for all four data tables.
 
     3. `PipelineID`: `@pipeline().RunId`
 
-        :::image type="complex" source="(Images/event-tbl-sink3.png"     alt-text="screenshot of the Copy Data activity parameter window":::
-       Screenshot that shows the Copy Data activity parameter window with the Sink tab selected and highlighted. AzureDataLakeStorageGen2 is selected in the Sink dataset section, and the Dataset properties section is highlighted and expanded to show Name, Value, and Type. Name and Value correspond to steps 2a-c; Type is string for all three rows.
-:::image-end:::
+        ![Screenshot of the Copy Data activity parameter window.](images/event-tbl-sink3.png)
 
 ### Add a notebook to the pipeline
 
@@ -242,13 +229,11 @@ Based on your orchestration tool and preferred processing platform, add a Synaps
 
     * **`CsvDataFileSystem`** - `@pipeline().parameters.CsvDataFileSystem`
 
-    :::image type="complex" source="(Images/notebook-parameters.png"     alt-text="screenshot of the screenshot of the Sink dataset Parameters window":::
-       Screenshot that shows the Sink dataset Parameters window with columns for Name, Type, and Value. Name and Value entries correspond to the parameter names and values in step 3; Type is String for all rows.
-:::image-end:::
+    ![screenshot of the Sink dataset Parameters window.](images/notebook-parameters.png)
 
 At this point, the pipeline should resemble the following image:
 
-:::image type="content" source="(Images/pipeline.png" alt-text="Screenshot of diagram in pipeline window showing all four Copy Data activities flowing into the JsonToCDM-CSV notebook":::
+![Screenshot of diagram in pipeline window showing all four Copy Data activities flowing into the JsonToCDM-CSV notebook.](images/pipeline.png)
 
 ## Publish the pipeline and add triggers
 
