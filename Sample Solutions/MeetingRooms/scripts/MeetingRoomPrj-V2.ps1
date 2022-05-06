@@ -15,8 +15,7 @@ function Auth365() {
     } 
     
     return Invoke-RestMethod -Uri "https://login.microsoftonline.com/$TenantName/oauth2/v2.0/token" -Method POST -Body $ReqTokenBody
-    # $TokenResponse = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$TenantName/oauth2/v2.0/token" -Method POST -Body $ReqTokenBody
-    # return $TokenResponse   
+
     
 }
 
@@ -43,7 +42,6 @@ function ReadCalendar($token) {
         $city = $p.address.city
         $building = $p.building
         $floorNumber = $p.floorNumber
-        # $api = "https://graph.microsoft.com/v1.0/users/$upn/events?$top=10&$filter=start/dateTime=2017-04-21T10:00:00.0000000 & end/dateTime=2022-04-10T20:00.0000000"
         # $api = "https://graph.microsoft.com/v1.0/users/$upn/events?filter=start/dateTime ge '2022-01-01T06:00:00.000' and start/dateTime lt '2022-04-01T17:00:00.000'"
         $api = "https://graph.microsoft.com/v1.0/users/$upn/events?top=500"
         
@@ -62,20 +60,6 @@ function ReadCalendar($token) {
                     $isOnline = $r.isOnlineMeeting
                     $attendeesCount = $r.attendees.count
                     $organizer = $r.organizer.emailAddress.address #name
-
-                    
-                    # "location": {
-                    #     "displayName": "Assembly Hall",
-                    #     "locationType": "default",
-                    #     "uniqueId": "Assembly Hall",
-                    #     "uniqueIdType": "private"
-                    # },
-                    # "locations": [
-                    #     {
-                    #         "displayName": "Assembly Hall",
-                    #         "locationType": "default",
-                    #         "uniqueIdType": "unknown"
-                    #     }
                     $HideAttendeesCount = $r.hideAttendees
                     # Write-Host "upn,Start,End,Id,AttendeesCount,Subject,Location" -Force Yellow
                     # Write-Host "$upn,$start,$end,$id,$attendeesCount,$subject,$Location" -Force Yellow
