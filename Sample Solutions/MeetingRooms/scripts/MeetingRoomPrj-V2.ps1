@@ -1,7 +1,7 @@
 # Application (client) ID, tenant Name and secret
-$ClientId = "a41d1fce-f522-4531-9bbf-994bef0025b4"
-$TenantName = "bd382938-3ba0-469f-8b45-fa06740d181f"
-$ClientSecret = "eFS8Q~.1WIqVFUkieSGwtIuIiBHLl24yv3sz2de2"
+$ClientId = ""
+$TenantName = ""
+$ClientSecret = ""
 $resource = "https://graph.microsoft.com/"
 
 
