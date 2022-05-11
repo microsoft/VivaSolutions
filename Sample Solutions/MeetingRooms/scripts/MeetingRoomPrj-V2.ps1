@@ -3,6 +3,7 @@ $ClientId = ""
 $TenantName = ""
 $ClientSecret = ""
 $resource = "https://graph.microsoft.com/"
+$OutfilePath = "C:\...."
 
 
 
@@ -15,7 +16,6 @@ function Auth365() {
     } 
     
     return Invoke-RestMethod -Uri "https://login.microsoftonline.com/$TenantName/oauth2/v2.0/token" -Method POST -Body $ReqTokenBody
-
     
 }
 
@@ -29,8 +29,8 @@ function ReadCalendar($token) {
     $Places = ($Data | Select-Object Value).Value 
   
 
-    Write-output "Upn,Id,Start,End,IsOnlineMeeting,AttendeesCount,Subject,Location" | Out-File "C:\Users\fahadda\Desktop\Places_Events.csv" -Append
-    Write-output "Upn,Id,DisplayName,Address_CountryOrRegion,Address_State,Address_City,Building,FloorNumber" | Out-File "C:\Users\fahadda\Desktop\Places.csv" -Append
+    Write-output "Upn,Id,Start,End,IsOnlineMeeting,AttendeesCount,Subject,Location" | Out-File "$OutfilePath\Places.csv" -Append
+    Write-output "Upn,Id,DisplayName,Address_CountryOrRegion,Address_State,Address_City,Building,FloorNumber" | Out-File "$OutfilePath\Places_Events.csv" -Append
 
     foreach ($p in $Places) {
         #All events for the user
@@ -45,8 +45,7 @@ function ReadCalendar($token) {
         # $api = "https://graph.microsoft.com/v1.0/users/$upn/events?filter=start/dateTime ge '2022-01-01T06:00:00.000' and start/dateTime lt '2022-04-01T17:00:00.000'"
         $api = "https://graph.microsoft.com/v1.0/users/$upn/events?top=500"
         
-        # Write-Host $upn,$id,$countryOrRegion,$state,$city,$building,$floorNumber
-        Write-output "$upn,$id,$displayName,$countryOrRegion,$state,$city,$building,$floorNumber" | Out-File "C:\Users\fahadda\Desktop\Places.csv" -Append
+        Write-output "$upn,$id,$displayName,$countryOrRegion,$state,$city,$building,$floorNumber" | Out-File "$OutfilePath\Places.csv" -Append
         $upn
         Write-Host $api #-Force Green
         $events = $null
@@ -59,12 +58,9 @@ function ReadCalendar($token) {
                     $end = [dateTime]$r.end.dateTime
                     $isOnline = $r.isOnlineMeeting
                     $attendeesCount = $r.attendees.count
-                    $organizer = $r.organizer.emailAddress.address #name
-                    $HideAttendeesCount = $r.hideAttendees
-                    # Write-Host "upn,Start,End,Id,AttendeesCount,Subject,Location" -Force Yellow
-                    # Write-Host "$upn,$start,$end,$id,$attendeesCount,$subject,$Location" -Force Yellow
-                    Write-output "$upn,$id,$start,$end,$isOnline,$attendeesCount,$subject,$Location" | Out-File "C:\Users\fahadda\Desktop\Places_Events.csv" -Append
-                    # $id,$start,$end, $attendeesCount,$subject
+                    $organizer = $r.organizer.emailAddress.address 
+                    
+                    Write-output "$upn,$id,$start,$end,$isOnline,$attendeesCount,$subject,$Location" | Out-File "$OutfilePath\Places_Events.csv" -Append
                 }
                 if ($events.'@Odata.NextLink'){
                     $events = Invoke-RestMethod -Headers @{Authorization = "Bearer $($token.access_token)"} -Uri $events.'@Odata.NextLink' -Method Get
