@@ -1,0 +1,27 @@
+cardtype,contenttype,displayorder,titlecontent,titleid,titlename,titletype
+,ContentTitle,4,Imagine you no longer have to work. How would you spend a Tuesday?,3,,
+,ContentTitle,3,What would it take to give up your smartphone for a month?,3,,
+,ContentTitle,2,Are you a cat or dog person?,3,,
+,ContentTitle,1,What is your favorite - food? beverage?,3,,
+,ContentTitle,6,"Link to sources:
+https://www.linkedin.com/pulse/key-breaking-bad-news-your-boss-calmness-clarity-bob-prentiss-cbap
+
+
+",2,,
+,ContentTitle,5,Step 5: Provide a solution/alternative,2,,
+,ContentTitle,4,Step 4: Pause and let your manager respond,2,,
+,ContentTitle,3,Step 3: (If applicable): Explain in a sentence or two why it happened,2,,
+,ContentTitle,2,Step 2: State what the bad new is,2,,
+,ContentTitle,1,Step 1: Ask for your manager's undivided attention,2,,
+Metrics,,,,1,Content to use in meeting,ContentTitle
+Horizontal,,,,3,Content to use in meeting,ContentTitle
+Vertical,,,,2,Content to use in meeting,ContentTitle
+,MainTitle,,"How well do you know your manager? Getting to know each other beyond the work setting is important.
+
+Selecting this card will prompt a set of icebreaker questions for both you and your manager to answer.",3,Icebreaker questions,MainTitle
+,MainTitle,,"Have something personal to share with your manager that will impact work? For example, did you test positive for COVID? Are you planning on starting a family soon? Are you dealing with a death in the family and need to take leave now?
+
+Selecting this card will populate a simple, step-by-step guide on how to share the news with your manager.",2,Breaking bad news to manager,MainTitle
+,MainTitle,,"Are you feeling overwhelmed? Struggling to maintain work-life balance? It is important to let your manager know - and to share some of your wellbeing metrics to frame the conversation, come up with interventions, and track whether it is working or not.
+
+Selecting this card will share your after hours, meeting hours, and focus time metrics during the meeting.",1,Data-driven work-life balance discussion,MainTitle

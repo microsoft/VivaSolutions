@@ -1,0 +1,335 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "vsol-graph-analytics-connector",
+    "description": "Custom connector to microsoft graph, analytics, site and profile for the yme powerapp",
+    "version": "1.0"
+  },
+  "host": "graph.microsoft.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/beta/me/analytics/activitystatistics": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "@odata.context": {
+                  "type": "string",
+                  "description": "@odata.context"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "@odata.type": {
+                        "type": "string",
+                        "description": "@odata.type"
+                      },
+                      "activity": {
+                        "type": "string",
+                        "description": "activity"
+                      },
+                      "startDate": {
+                        "type": "string",
+                        "description": "startDate"
+                      },
+                      "endDate": {
+                        "type": "string",
+                        "description": "endDate"
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "id"
+                      },
+                      "timeZoneUsed": {
+                        "type": "string",
+                        "description": "timeZoneUsed"
+                      },
+                      "duration": {
+                        "type": "string",
+                        "description": "duration"
+                      },
+                      "afterHours": {
+                        "type": "string",
+                        "description": "afterHours"
+                      },
+                      "readEmail": {
+                        "type": "string",
+                        "description": "readEmail"
+                      },
+                      "sentEmail": {
+                        "type": "string",
+                        "description": "sentEmail"
+                      },
+                      "organized": {
+                        "type": "string",
+                        "description": "organized"
+                      },
+                      "recurring": {
+                        "type": "string",
+                        "description": "recurring"
+                      },
+                      "long": {
+                        "type": "string",
+                        "description": "long"
+                      },
+                      "conflicting": {
+                        "type": "string",
+                        "description": "conflicting"
+                      },
+                      "multitasking": {
+                        "type": "string",
+                        "description": "multitasking"
+                      }
+                    }
+                  },
+                  "description": "value"
+                }
+              }
+            }
+          }
+        },
+        "summary": "GetMyAnalyticsActivity",
+        "operationId": "GetMyAnalyticsActivity",
+        "description": "Get my analytics activity from Microsoft Graph",
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/beta/me/mailboxSettings/workingHours": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "@odata.context": {
+                  "type": "string",
+                  "description": "@odata.context"
+                },
+                "daysOfWeek": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "daysOfWeek"
+                },
+                "startTime": {
+                  "type": "string",
+                  "description": "startTime"
+                },
+                "endTime": {
+                  "type": "string",
+                  "description": "endTime"
+                },
+                "timeZone": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "name"
+                    }
+                  },
+                  "description": "timeZone"
+                }
+              }
+            }
+          }
+        },
+        "summary": "GetMyWorkingHours",
+        "description": "Get my outlook mailbox settings for the workweek and working hours",
+        "operationId": "GetMyWorkingHours",
+        "parameters": []
+      }
+    },
+    "/beta/me/mailboxSettings": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "default",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "@odata.context": {
+                  "type": "string",
+                  "description": "@odata.context"
+                },
+                "archiveFolder": {
+                  "type": "string",
+                  "description": "archiveFolder"
+                },
+                "timeZone": {
+                  "type": "string",
+                  "description": "timeZone"
+                },
+                "delegateMeetingMessageDeliveryOptions": {
+                  "type": "string",
+                  "description": "delegateMeetingMessageDeliveryOptions"
+                },
+                "dateFormat": {
+                  "type": "string",
+                  "description": "dateFormat"
+                },
+                "timeFormat": {
+                  "type": "string",
+                  "description": "timeFormat"
+                },
+                "userPurpose": {
+                  "type": "string",
+                  "description": "userPurpose"
+                },
+                "userPurposeV2": {
+                  "type": "string",
+                  "description": "userPurposeV2"
+                },
+                "automaticRepliesSetting": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "status"
+                    },
+                    "externalAudience": {
+                      "type": "string",
+                      "description": "externalAudience"
+                    },
+                    "internalReplyMessage": {
+                      "type": "string",
+                      "description": "internalReplyMessage"
+                    },
+                    "externalReplyMessage": {
+                      "type": "string",
+                      "description": "externalReplyMessage"
+                    },
+                    "scheduledStartDateTime": {
+                      "type": "object",
+                      "properties": {
+                        "dateTime": {
+                          "type": "string",
+                          "description": "dateTime"
+                        },
+                        "timeZone": {
+                          "type": "string",
+                          "description": "timeZone"
+                        }
+                      },
+                      "description": "scheduledStartDateTime"
+                    },
+                    "scheduledEndDateTime": {
+                      "type": "object",
+                      "properties": {
+                        "dateTime": {
+                          "type": "string",
+                          "description": "dateTime"
+                        },
+                        "timeZone": {
+                          "type": "string",
+                          "description": "timeZone"
+                        }
+                      },
+                      "description": "scheduledEndDateTime"
+                    }
+                  },
+                  "description": "automaticRepliesSetting"
+                },
+                "language": {
+                  "type": "object",
+                  "properties": {
+                    "locale": {
+                      "type": "string",
+                      "description": "locale"
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "description": "displayName"
+                    }
+                  },
+                  "description": "language"
+                },
+                "workingHours": {
+                  "type": "object",
+                  "properties": {
+                    "daysOfWeek": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "daysOfWeek"
+                    },
+                    "startTime": {
+                      "type": "string",
+                      "description": "startTime"
+                    },
+                    "endTime": {
+                      "type": "string",
+                      "description": "endTime"
+                    },
+                    "timeZone": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "name"
+                        }
+                      },
+                      "description": "timeZone"
+                    }
+                  },
+                  "description": "workingHours"
+                }
+              }
+            }
+          }
+        },
+        "summary": "GetMyMailboxSettings",
+        "description": "Get My outlook mailbox settings",
+        "operationId": "GetMyMailboxSettings",
+        "parameters": []
+      }
+    }
+  },
+  "definitions": {},
+  "parameters": {},
+  "responses": {},
+  "securityDefinitions": {
+    "undefined": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://login.windows.net/common/oauth2/authorize",
+      "tokenUrl": "https://login.windows.net/common/oauth2/authorize",
+      "scopes": {
+        "Analytics.Read": "Analytics.Read",
+        "profile": "profile",
+        "User.Read": "User.Read",
+        "MailboxSettings.Read": "MailboxSettings.Read"
+      }
+    }
+  },
+  "security": [
+    {
+      "undefined": [
+        "Analytics.Read",
+        "profile",
+        "User.Read",
+        "MailboxSettings.Read"
+      ]
+    }
+  ],
+  "tags": []
+}
