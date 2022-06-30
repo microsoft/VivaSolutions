@@ -2,14 +2,13 @@
 
 
 ## Summary
-YUME is a Viva tool that enhances both the manager and employee experience
-Equips managers and employees with topics and guided conversations for deeper 1:1 discussion and connection
+YUME is an application built in power apps that enhances both the manager and employee experience.
+Equips employees with topics and guided conversations for deeper 1:1 discussion and connection
 Leverages M365 add-in functionality with cards, nudges and notifications
 
 ![YUME Meeting Flow](./assets/samplescreenshots.png)
 
 ## Why use this and what value does it provide
-- In a workplace study, 92% of employees consider meetings costly and unproductive. 
 - YUME empowers the manager and employee driving employee engagement and retention
 - Common use cases:
     - Difficult Conversations; provides a toolkit for employees to engage with managers in difficult discussions

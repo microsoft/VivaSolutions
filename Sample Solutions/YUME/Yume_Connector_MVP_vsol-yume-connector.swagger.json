@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "vsol-graph-analytics-connector",
-    "description": "Custom connector to microsoft graph, analytics, site and profile for the yme powerapp",
+    "description": "Custom connector to microsoft graph, analytics, site and profile for the Yume power app",
     "version": "1.0"
   },
   "host": "graph.microsoft.com",
